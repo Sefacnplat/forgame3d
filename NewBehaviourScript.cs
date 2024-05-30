@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     // Hareket hızı için ayarlanabilir bir değişken
-    [SerializeField] private float moveSpeed;
+    public float moveSpeed = 10;
     // Rigidbody bileşenine referans
     private Rigidbody playerRigidbody;
 
