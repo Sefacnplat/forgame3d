@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject secondLevel;
 
     // Oyunun başlangıcında Rigidbody bileşenini al
-    private void Awake()
+    private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
     }
