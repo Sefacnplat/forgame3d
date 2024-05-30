@@ -1,36 +1,50 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    private Rigidbody body;
+    // Hareket hızı için ayarlanabilir bir değişken
+    [SerializeField] private float moveSpeed;
+    // Rigidbody bileşenine referans
+    private Rigidbody playerRigidbody;
 
-    public GameObject firstlevel;
-    public GameObject secondlevel;
+    // Seviye geçişleri için GameObject referansları
+    public GameObject firstLevel;
+    public GameObject secondLevel;
 
-    private void Awake ()
+    // Oyunun başlangıcında Rigidbody bileşenini al
+    private void Awake()
     {
-        body = GetComponent<Rigidbody>();
+        playerRigidbody = GetComponent<Rigidbody>();
     }
 
+    // Her karede çağrılan güncelleme metodu
     void Update()
     {
+        // Yatay ve dikey girişleri al
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        
-        Vector3 direction = new Vector3(horizontalInput, 0, verticalInput).normalized;
-        body.velocity = direction * speed;
 
-        if(direction != Vector3.zero) {
-            transform.forward = direction;
-        }    
+        // Girişe dayalı bir yön vektörü oluştur ve normalize et
+        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+        // Rigidbody'nin hızını yön ve hızla çarpılarak ayarla
+        playerRigidbody.velocity = moveDirection * moveSpeed;
+
+        // Eğer hareket yönü sıfır değilse, karakterin yönünü hareket yönüne çevir
+        if (moveDirection != Vector3.zero)
+        {
+            transform.forward = moveDirection;
+        }
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Finish")
+    // Çarpışma olduğunda çağrılan metot
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Eğer çarpışılan nesnenin etiketi "Finish" ise
+        if (collision.gameObject.CompareTag("Finish"))
         {
-            SceneManager.LoadScene("secondlevel");
-        }  
+            // İkinci seviyeyi yükle
+            SceneManager.LoadScene("secondLevel");
+        }
     }
 }
